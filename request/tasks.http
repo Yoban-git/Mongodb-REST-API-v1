@@ -1,0 +1,65 @@
+
+GET http://localhost:3000/api/tasks/
+
+
+###
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+
+{
+  "title": "New api",
+  "description": "This is a new api"
+}
+
+
+###
+PUT http://localhost:3000/api/tasks/
+Content-Type: application/json
+
+{
+  "title": "Updated api",
+  "description": "This is an updated api"
+}
+
+
+###
+DELETE http://localhost:3000/api/tasks/
+
+
+
+
+
+###
+GET http://localhost:3000/api/empleados
+
+
+###
+POST http://localhost:3000/api/empleados
+Content-Type: application/json
+
+{
+    "rfc": "CAV123456789",
+    "nombre": "Dulces de prueba",
+    "paterno": "Paterno",
+    "materno": "Materno",
+    "fechaNacimiento": "1990-01-01",
+    "sexo": "M",
+    "direccion": "Calle Falsa 123",
+    "celular": "1234567890"
+}
+
+
+###
+PUT  http://localhost:3000/api/empleados
+Content-Type: application/json
+
+{
+    "rfc": "QWE23456789",
+    "nombre": "Empleado prueba",
+    "paterno": "Paterno",
+    "materno": "Materno",
+}
+
+
+###
+DELETE http://localhost:3000/api/empleados/
