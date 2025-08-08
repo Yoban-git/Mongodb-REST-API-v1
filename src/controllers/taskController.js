@@ -1,8 +1,8 @@
 //importamos el modelo Task el cual tiene la estructura de la collecions Task en la base de datos
 import Task from "../models/Task.js";
+import { getPagination } from "../libs/getPagination.js";
 //controlador para obtenr todos los registros
 export const todasTask = async (req, res) => {
-    try{
         //find() devuelve todos los documentos de la colleción
         //await espera a que se resuelva la promesa
         //listaTask es un array de objetos
@@ -14,8 +14,19 @@ export const todasTask = async (req, res) => {
         //message es una propiedad del objeto JSON que contiene el mensaje de error
         //|| es un operador lógico que devuelve el valor de la derecha si el valor de la izquierda es falsy
         //en este caso, si error.message es falsy, se devuelve el mensaje por defecto
-        const listaTask = await Task.find();
-        res.json(listaTask);
+    try{
+        const {size, page, title} = req.query;
+        const condicion = title ? {
+            title: { $regex: new RegExp(title), $options: "i"}
+        } : {};
+        const {limit, offset} = getPagination(page, size);
+        const listaTask = await Task.paginate(condicion, {offset, limit});
+        res.json({
+            total: listaTask.totalDocs,
+            tasks: listaTask.docs,
+            totalPages: listaTask.totalPages,
+            currentPage: listaTask.page - 1,
+        });
     }catch(error){
         res.status(500).json({
             message: error.message || 'Error al obtener las tareas',

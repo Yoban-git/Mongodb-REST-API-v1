@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongoosePagination from "mongoose-paginate-v2";
 //schema y model sirven para definir la estructura de los documentos y crear modelos basados en esos esquemas
 const empleado = new Schema({
     rfc: {
@@ -46,4 +47,5 @@ const empleado = new Schema({
 */
 
 //empleado en el nombre de la caolleción en la base de datos
+empleado.plugin(mongoosePagination);
 export default model('empleado', empleado);

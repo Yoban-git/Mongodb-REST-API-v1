@@ -1,11 +1,24 @@
 import Productos from "../models/Productos.js";
+import { getPagination } from "../libs/getPagination.js";
+
 //controlador para obtener todoso los reqistros de empelado
 export const todosEmpleados = async (req, res) => {
     try{
+        const {size, page, rfc} = req.query;
+
+        const condicion = rfc ?{
+            rfc: { $regex: new RegExp(req.query.rfc || ''), $options: "i" }
+        } : {};
+        const {limit, offset} = getPagination(page, size);
         //find devuelve todos los documentos que coincidan con la consulta
-        const listadoEmpelado = await Productos.find();
+        const listadoEmpelado = await Productos.paginate(condicion, {offset, limit});
         //res.jon devuelve el listado de empleados
-        res.json(listadoEmpelado);        
+        res.json({
+            total: listadoEmpelado.totalDocs,
+            empleados: listadoEmpelado.docs,
+            totalPages: listadoEmpelado.totalPages,
+            currentPage: listadoEmpelado.page - 1,
+        });
     //si no hay empleados, se devuelve un mensaje
     }catch(error){
         res.status(500).json({
